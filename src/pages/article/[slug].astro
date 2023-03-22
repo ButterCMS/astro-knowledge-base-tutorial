@@ -1,4 +1,6 @@
 ---
+// ./src/pages/article/[slug].astro
+
 import Layout from "../../layouts/Layout.astro";
 import { butterClient, kb_article } from "../../lib/butter";
 const { slug } = Astro.params;
@@ -6,9 +8,6 @@ const { slug } = Astro.params;
 const response = await butterClient.page.retrieve("kb_article", slug);
 const article = response.data.data as kb_article;
 
-console.log({
-  article,
-});
 ---
 
 <main class="site-main">

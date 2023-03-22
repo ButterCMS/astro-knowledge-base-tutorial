@@ -1,4 +1,6 @@
 ---
+// ./src/pages/search.astro
+
 import ArticleItem from "../components/ArticleItem.astro";
 import LandingHero from "../components/LandingHero.astro";
 import Layout from "../layouts/Layout.astro";
@@ -13,10 +15,6 @@ const response = await butterClient.page.search(query, {
 const pagesData = response.data.data;
 
 const articles = pagesData as kb_article[];
-
-console.log({
-  pagesData,
-});
 ---
 
 <Layout
