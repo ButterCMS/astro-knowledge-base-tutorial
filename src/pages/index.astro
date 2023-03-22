@@ -1,41 +1,49 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+// .src/pages/index.astro
+
+import LandingHero from "../components/LandingHero.astro";
+import FeaturedArticles from "../components/Sections/FeaturedArticles.astro";
+import FeaturedCategories from "../components/Sections/FeaturedCategories.astro";
+import KBFAQs from "../components/Sections/KBFAQs.astro";
+import Layout from "../layouts/Layout.astro";
+import { butterClient, kb_landing_page_fields } from "../lib/butter";
+
+// retrieve the page data from ButterCMS by type and slug
+const response = await butterClient.page.retrieve(
+  "kb_landing_page",
+  "kb-home-page"
+);
+
+// get the page data
+const pageData = response.data.data;
+
+// cast the fields to the correct type
+const fields = pageData.fields as kb_landing_page_fields;
 ---
 
-<Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul>
-	</main>
+<Layout title={fields.seo.title} description={fields.seo.description}>
+  <main class="site-main">
+    <LandingHero fields={fields.kb_landing_hero} />
+    {
+      fields.sections.map((section) => {
+        switch (section.type) {
+          case "kb_featured_categories":
+            return <FeaturedCategories section={section} />;
+          case "kb_featured_articles":
+            return <FeaturedArticles section={section} />;
+          case "kb_faqs":
+            return <KBFAQs section={section} />;
+          default:
+            return null;
+        }
+      })
+    }
+  </main>
 </Layout>
 
-<style>
+<style></style>
+
+<!-- <style>
 	main {
 		margin: auto;
 		padding: 1.5rem;
@@ -78,4 +86,4 @@ import Card from '../components/Card.astro';
 		gap: 1rem;
 		padding: 0;
 	}
-</style>
+</style> -->

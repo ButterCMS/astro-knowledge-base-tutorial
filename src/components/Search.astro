@@ -1,0 +1,62 @@
+---
+interface Props {
+  placeholder?: string;
+}
+const { placeholder } = Astro.props;
+---
+
+<form id="search" class="search">
+  <input
+    id="search-input"
+    type="text"
+    class="search-input form-input"
+    placeholder={placeholder}
+  />
+  <button class="cta search-button">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon feather feather-search"
+    >
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+  </button>
+</form>
+<script>
+  const form = document.getElementById("search") as HTMLFormElement;
+  const searchInput = document.getElementById(
+    "search-input"
+  ) as HTMLInputElement;
+
+  const handleSearch = (e: FormDataEvent) => {
+    e.preventDefault();
+    const search = searchInput.value;
+    console.log(e.target);
+    if (search) {
+      window.location.href = `/search?query=${search}`;
+    }
+  };
+
+  form.addEventListener("submit", handleSearch);
+</script>
+<style>
+  .search {
+    @apply flex flex-row gap-4 w-full p-2 my-6 bg-purple-600 rounded-[2rem] shadow-2xl shadow-purple-600/60 dark:shadow-purple-900/60 max-w-3xl m-auto;
+  }
+
+  .form-input {
+    @apply grow rounded-3xl;
+  }
+
+  .search-input {
+    @apply bg-purple-500 text-purple-50 placeholder:text-purple-300 border-purple-500 focus:border-purple-400 focus:ring-purple-400;
+  }
+</style>

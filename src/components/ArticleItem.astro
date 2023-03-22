@@ -1,0 +1,29 @@
+---
+// ./src/components/ArticleItem.astro
+import type { kb_article } from "../lib/butter";
+export type Props = {
+  article: kb_article;
+};
+const { article } = Astro.props;
+
+console.log({
+  article,
+});
+---
+
+<a href={`/article/${article.slug}`}>
+  <article class="article-item">
+    <h3 class="title">{article.fields.title}</h3>
+    <p>{article.fields.description}</p>
+  </article>
+</a>
+<style>
+  .article-item {
+    @apply flex flex-col gap-2 p-6 px-8 rounded-3xl cursor-pointer;
+    @apply transition hover:bg-purple-600 hover:text-purple-100;
+  }
+
+  .article-item .title {
+    @apply text-3xl font-light;
+  }
+</style>

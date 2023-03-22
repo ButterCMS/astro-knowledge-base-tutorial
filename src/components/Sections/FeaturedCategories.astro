@@ -1,0 +1,34 @@
+---
+// ./src/components/Sections/FeaturedCategories.astro
+
+import { kb_featured_categories } from "../../lib/butter";
+import CategoryItem from "../CategoryItem.astro";
+
+export type Props = {
+  section: kb_featured_categories;
+};
+
+const { section } = Astro.props;
+---
+
+<section class="site-section" data-section={section.type}>
+  <div class="wrapper">
+    <header class="section-header">
+      <h2 class="caption">{section.fields.caption}</h2>
+    </header>
+    <ul class="categories-list">
+      {
+        section.fields.categories.map((category) => (
+          <li>
+            <CategoryItem category={category} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+<style>
+  .categories-list {
+    @apply grid sm:grid-cols-3 gap-6;
+  }
+</style>

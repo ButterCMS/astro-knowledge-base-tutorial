@@ -1,0 +1,54 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { butterClient, kb_article } from "../../lib/butter";
+const { slug } = Astro.params;
+
+const response = await butterClient.page.retrieve("kb_article", slug);
+const article = response.data.data as kb_article;
+
+console.log({
+  article,
+});
+---
+
+<main class="site-main">
+  <Layout title={article.fields.title} description={article.fields.description}>
+    <article class="site-article">
+      <div class="wrapper">
+        <header class="article-header">
+          <div class="wrapper">
+            <h1 class="article-header-caption">
+              {article.fields.title}
+            </h1>
+            <p class="site-hero-text">
+              {article.fields.description}
+            </p>
+          </div>
+        </header>
+        <section class="site-section content-section">
+          <div
+            class="wrapper prose dark:prose-invert !max-w-4xl"
+            set:html={article.fields.content}
+          />
+        </section>
+      </div>
+    </article>
+  </Layout>
+</main>
+<style>
+  .article-header {
+    @apply p-4 pt-24 dark:bg-slate-900 dark:text-slate-100;
+  }
+
+  .article-header .wrapper {
+    @apply flex flex-col gap-4 py-24 text-center max-w-5xl m-auto;
+  }
+
+  .article-header-caption {
+    @apply text-3xl sm:text-5xl font-light;
+  }
+
+  .site-hero-text {
+    @apply text-lg sm:text-xl;
+  }
+</style>

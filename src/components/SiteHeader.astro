@@ -1,0 +1,30 @@
+<!-- ./src/components/SiteHeader.astro -->
+
+<header class="site-header">
+  <div class="wrapper">
+    <a href="/">
+      <div class="site-logo text-purple-400">
+        <span class="logo-text">Cosmic</span>
+        | Knowledge Base
+      </div>
+    </a>
+  </div>
+</header>
+<style>
+  .site-header {
+    @apply fixed top-0 p-4 w-full z-50;
+  }
+
+  .site-header > .wrapper {
+    @apply p-4 bg-white/80 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 rounded-full max-w-6xl m-auto;
+    @apply backdrop-blur-lg;
+  }
+
+  .site-logo {
+    @apply flex items-center gap-2 px-2 leading-[normal];
+  }
+
+  .site-logo .logo-text {
+    @apply text-2xl font-light tracking-widest text-purple-700 dark:text-purple-400;
+  }
+</style>
