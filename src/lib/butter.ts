@@ -2,7 +2,10 @@
 
 import Butter from "buttercms";
 
-export const butterClient = Butter(import.meta.env.BUTTER_TOKEN);
+const token = import.meta.env.BUTTER_TOKEN;
+console.log("token", token);
+
+export const butterClient = Butter(token);
 
 export interface kb_article {
   slug: string;
