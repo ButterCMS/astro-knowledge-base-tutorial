@@ -1,0 +1,49 @@
+---
+// ./src/components/KBFAQs.astro
+
+import type { kb_faqs } from "../../lib/butter";
+export interface Props {
+  section: kb_faqs;
+}
+const { section } = Astro.props;
+---
+
+<section class={"site-section"}>
+  <div class="wrapper">
+    <header class="section-header">
+      <h2 class="caption">{section.fields.caption}</h2>
+    </header>
+    <ul class="faqs-list">
+      {
+        section.fields.faqs.map((faq) => (
+          <details class="faq-item">
+            <summary class="summary">{faq.question}</summary>
+            <div class="content" set:html={faq.answer} />
+          </details>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+<style>
+  .faqs-list {
+    @apply flex flex-col gap-4;
+  }
+
+  .faq-item {
+    @apply flex flex-col gap-4 p-6 px-8 bg-white dark:bg-slate-700 rounded-3xl;
+    @apply transition;
+  }
+
+  .faq-item[open] {
+    @apply bg-purple-600 text-purple-100;
+  }
+
+  .summary {
+    @apply text-2xl font-light cursor-pointer;
+  }
+
+  .content {
+    @apply pt-4;
+  }
+</style>

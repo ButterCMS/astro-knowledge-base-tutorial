@@ -1,0 +1,41 @@
+---
+// ./src/components/LandingHero.astro
+
+import type { kb_landing_hero } from "../lib/butter";
+import Search from "./Search.astro";
+
+export type Props = {
+  fields: kb_landing_hero;
+};
+
+const { fields } = Astro.props;
+---
+
+<header class="site-hero">
+  <div class="wrapper">
+    <h1 class="site-hero-caption">
+      {fields.caption}
+    </h1>
+    <p class="site-hero-text">
+      {fields.text}
+    </p>
+    <Search placeholder={fields.search_field_placeholder} />
+  </div>
+</header>
+<style>
+  .site-hero {
+    @apply p-4 pt-24 dark:bg-slate-900 dark:text-slate-100;
+  }
+
+  .site-hero .wrapper {
+    @apply flex flex-col gap-4 py-24 text-center max-w-5xl m-auto;
+  }
+
+  .site-hero-caption {
+    @apply text-3xl sm:text-5xl font-light;
+  }
+
+  .site-hero-text {
+    @apply text-lg sm:text-xl;
+  }
+</style>

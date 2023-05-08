@@ -1,0 +1,29 @@
+---
+// ./src/components/Sections/FeaturedArticles.astro
+
+import { kb_featured_articles } from "../../lib/butter";
+import ArticleItem from "../ArticleItem.astro";
+
+export type Props = {
+  section: kb_featured_articles;
+};
+
+const { section } = Astro.props;
+---
+
+<section class="site-section" data-section={section.type}>
+  <div class="wrapper">
+    <header class="section-header">
+      <h2 class="caption">{section.fields.caption}</h2>
+    </header>
+    <ul class="articles-list">
+      {
+        section.fields.articles.map((article) => (
+          <li>
+            <ArticleItem article={article} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

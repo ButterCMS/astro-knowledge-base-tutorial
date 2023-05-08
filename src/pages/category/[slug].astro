@@ -1,0 +1,54 @@
+---
+// ./src/pages/category/[slug].astro
+
+import ArticleItem from "../../components/ArticleItem.astro";
+import LandingHero from "../../components/LandingHero.astro";
+import Layout from "../../layouts/Layout.astro";
+import { butterClient, kb_article, kb_category } from "../../lib/butter";
+
+const { slug } = Astro.params;
+
+const params = {
+  "fields.category.slug": slug,
+};
+
+const collectionResponse = await butterClient.content.retrieve(
+  ["kb_category"],
+  {
+    "fields.slug": slug,
+  }
+);
+
+const pagesResponse = await butterClient.page.list("kb_article", params);
+
+const categoryData = collectionResponse.data.data;
+const pagesData = pagesResponse.data.data;
+
+const category = categoryData.kb_category as kb_category[];
+const articles = pagesData as unknown as kb_article[];
+---
+
+<Layout title={category[0].name} description={category[0].description}>
+  <main class="site-main">
+    <LandingHero
+      fields={{
+        caption: category[0].name,
+        text: category[0].description,
+        search_field_placeholder: "Search for articles",
+      }}
+    />
+    <section class="site-section">
+      <div class="wrapper">
+        <ul class="articles-list">
+          {
+            articles.map((article) => (
+              <li>
+                <ArticleItem article={article} />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+</Layout>

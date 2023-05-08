@@ -1,0 +1,89 @@
+---
+// .src/pages/index.astro
+
+import LandingHero from "../components/LandingHero.astro";
+import FeaturedArticles from "../components/Sections/FeaturedArticles.astro";
+import FeaturedCategories from "../components/Sections/FeaturedCategories.astro";
+import KBFAQs from "../components/Sections/KBFAQs.astro";
+import Layout from "../layouts/Layout.astro";
+import { butterClient, kb_landing_page_fields } from "../lib/butter";
+
+// retrieve the page data from ButterCMS by type and slug
+const response = await butterClient.page.retrieve(
+  "kb_landing_page",
+  "kb-home-page"
+);
+
+// get the page data
+const pageData = response.data.data;
+
+// cast the fields to the correct type
+const fields = pageData.fields as kb_landing_page_fields;
+---
+
+<Layout title={fields.seo.title} description={fields.seo.description}>
+  <main class="site-main">
+    <LandingHero fields={fields.kb_landing_hero} />
+    {
+      fields.sections.map((section) => {
+        switch (section.type) {
+          case "kb_featured_categories":
+            return <FeaturedCategories section={section} />;
+          case "kb_featured_articles":
+            return <FeaturedArticles section={section} />;
+          case "kb_faqs":
+            return <KBFAQs section={section} />;
+          default:
+            return null;
+        }
+      })
+    }
+  </main>
+</Layout>
+
+<style></style>
+
+<!-- <style>
+	main {
+		margin: auto;
+		padding: 1.5rem;
+		max-width: 60ch;
+	}
+	h1 {
+		font-size: 3rem;
+		font-weight: 800;
+		margin: 0;
+	}
+	.text-gradient {
+		background-image: var(--accent-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-size: 400%;
+		background-position: 0%;
+	}
+	.instructions {
+		line-height: 1.6;
+		margin: 1rem 0;
+		border: 1px solid rgba(var(--accent), 25%);
+		background-color: white;
+		padding: 1rem;
+		border-radius: 0.4rem;
+	}
+	.instructions code {
+		font-size: 0.875em;
+		font-weight: bold;
+		background: rgba(var(--accent), 12%);
+		color: rgb(var(--accent));
+		border-radius: 4px;
+		padding: 0.3em 0.45em;
+	}
+	.instructions strong {
+		color: rgb(var(--accent));
+	}
+	.link-card-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+		gap: 1rem;
+		padding: 0;
+	}
+</style> -->

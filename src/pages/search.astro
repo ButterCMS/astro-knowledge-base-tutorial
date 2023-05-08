@@ -1,0 +1,46 @@
+---
+// ./src/pages/search.astro
+
+import ArticleItem from "../components/ArticleItem.astro";
+import LandingHero from "../components/LandingHero.astro";
+import Layout from "../layouts/Layout.astro";
+import { butterClient, kb_article } from "../lib/butter";
+
+const query = Astro.url.searchParams.get("query");
+
+const response = await butterClient.page.search(query, {
+  page_type: "kb_article",
+});
+
+const pagesData = response.data.data;
+
+const articles = pagesData as kb_article[];
+---
+
+<Layout
+  title={`Results matching ${query}`}
+  description={`Results matching ${query}`}
+>
+  <main class="site-main">
+    <LandingHero
+      fields={{
+        caption: `Results matching "${query}"`,
+        text: `Here's what we could find matching "${query}"`,
+        search_field_placeholder: "Search for something else",
+      }}
+    />
+    <section class="site-section">
+      <div class="wrapper">
+        <ul class="articles-list">
+          {
+            articles.map((article) => (
+              <li>
+                <ArticleItem article={article} />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </main>
+</Layout>
